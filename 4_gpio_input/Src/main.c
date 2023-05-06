@@ -8,6 +8,7 @@
 #define PIN					(1U<<5)
 #define LED_PIN				PIN
 
+#define BTN_PIN				(1U<<13)
 
 int main(void)
 {
@@ -25,7 +26,7 @@ int main(void)
 	while(1)
 	{
 		/*On button press LED off else LED on*/
-		if(GPIOC->IDR &= (1U<<13))
+		if(GPIOC->IDR & BTN_PIN)
 		{
 			GPIOA->BSRR |= LED_PIN;
 		}
