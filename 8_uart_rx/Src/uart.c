@@ -20,6 +20,7 @@
 static void usart_set_baud_rate(USART_TypeDef* USARTx, uint32_t periph_clk, uint32_t baudrate);
 uint16_t calculate_usart_bd(uint32_t periph_clk, uint32_t baudrate);
 void usart_write(int ch);
+char usart_read(void);
 
 
 /*To enable use of printf; __io_putchar in syscalls.c*/
