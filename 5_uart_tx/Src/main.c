@@ -11,18 +11,24 @@
 #define USART_TE			(1U<<3)
 #define USART_EN 			(1U<<13)
 
-void usart2_init(void);
-void usart_set_baud_rate(USART_TypeDef* USARTx, uint32_t periph_clk, uint32_t baudrate);
+#define USART_TXE			(1U<<7)
+
+
+static void usart_set_baud_rate(USART_TypeDef* USARTx, uint32_t periph_clk, uint32_t baudrate);
 uint16_t calculate_usart_bd(uint32_t periph_clk, uint32_t baudrate);
+void usart_write(int ch);
+void usart2_init(void);
 
 
 int main(void)
 {
 
+	usart2_init();
 
 	while(1)
 	{
-
+		int ch = 'C';
+		usart_write(ch);
 	}
 }
 
@@ -67,4 +73,13 @@ static void usart_set_baud_rate(USART_TypeDef* USARTx, uint32_t periph_clk, uint
 uint16_t calculate_usart_bd(uint32_t periph_clk, uint32_t baudrate)
 {
 	return ((periph_clk + (baudrate/2U)) / baudrate); //EMPIRICAL FORMULA
+}
+
+void usart_write(int ch)
+{
+	/*Make sure transmit data register is empty*/
+	while(!(USART2->SR & USART_TXE)){}
+
+	/*Write data*/
+	USART2->DR = (ch & 0XFF);
 }
