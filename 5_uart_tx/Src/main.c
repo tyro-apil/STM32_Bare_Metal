@@ -5,6 +5,7 @@
 #define USART2EN			(1U<<17)
 
 #define SYS_CLK				16000000
+#define APB1_CLK			SYS_CLK
 #define BAUD_RATE			115200
 
 #define USART_TE			(1U<<3)
@@ -42,15 +43,15 @@ void usart2_init(void)
 	GPIOA->AFR[0] &= ~(1U<<11);
 
 
-	/***********Configure USART2**********/
+	/***********Configure USART2 module**********/
 	/*clock access enable(APB1 bus)*/
 	RCC->APB1ENR |= USART2EN;
 
 	/*Configure Baud Rate(Store in baud rate register(BRR) of USART_Typedef*/
-	usart_set_baud_rate(USART2, SYS_CLK, BAUD_RATE);
+	usart_set_baud_rate(USART2, APB1_CLK, BAUD_RATE);
 
 	/*Enable USART_TX*/
-	USART2->CR1 = USART_TE;
+	USART2->CR1 = USART_TE; //why not bitwise OR?? - Set all bits except TE to 0
 
 	/*Enable USART communication*/
 	USART2->CR1 |= USART_EN;
